@@ -26,9 +26,21 @@
                     @gig.Genre.Name
                 </span>
                 <div class="actions">
-                    <a href="@Url.Action("Edit", "Gigs", new {id = gig.Id})">Edit</a>
+                    <a href="@Url.Action("Edit", "Gigs", new {id = gig.Id})">Edit</a> | <a class="js-cancel-gig" data-gig-id="@gig.Id" href="#">Cancel</a>
                 </div>
             </div>
         </li>
     }
 </ul>
+@section scripts
+{
+    <script>
+        $(document)
+            .ready(function () {
+                $('.js-cancel-gig')
+                    .click(function () {
+
+                    });
+            });
+    </script>
+}
