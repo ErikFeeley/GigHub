@@ -1,6 +1,8 @@
-﻿using GigHub.Models;
+﻿using System.Linq;
+using GigHub.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.Http;
+using GigHub.Dtos;
 
 namespace GigHub.Controllers
 
@@ -16,12 +18,17 @@ namespace GigHub.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Attend([FromBody] int gigId) // web api by default does not look for this in the request body it expects them to be in url. so we have to decorate with from body
+        public IHttpActionResult Attend(AttendanceDto dto) // web api by default does not look for this in the request body it expects them to be in url. so we have to decorate with from body
         {
+            var userId = User.Identity.GetUserId();
+
+            if (_context.Attendances.Any(a => a.AttendeeId == userId && a.GigId == dto.Gigid))
+                return BadRequest("The attendance already exists.");
+
             var attendance = new Attendance
             {
-                GigId = gigId,
-                AttendeeId = User.Identity.GetUserId()
+                GigId = dto.Gigid,
+                AttendeeId = userId
             };
 
             _context.Attendances.Add(attendance);
