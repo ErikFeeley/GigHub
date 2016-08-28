@@ -2,11 +2,16 @@
 using GigHub.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using System.Web.Mvc;
+using GigHub.Controllers;
 
 namespace GigHub.ViewModels
 {
     public class GigFormViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         public string Venue { get; set; }
 
@@ -22,6 +27,21 @@ namespace GigHub.ViewModels
         public byte Genre { get; set; }
 
         public IEnumerable<Genre> Genres { get; set; }
+
+        public string Heading { get; set; }
+
+        public string Action
+        {
+            get
+            {
+                // this is some wizardy i need to look more at this. basically this makes it so we dont have to use magic strings to redirect the actions
+                Expression<Func<GigsController, ActionResult>> update = (c => c.Update(this));
+                Expression<Func<GigsController, ActionResult>> create = (c => c.Create(this));
+
+                var action = (Id != 0) ? update : create;
+                return (action.Body as MethodCallExpression).Method.Name;
+            }
+        }
 
         public DateTime GetDateTime()
         {
