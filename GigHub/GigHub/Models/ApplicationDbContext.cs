@@ -26,7 +26,7 @@ namespace GigHub.Models
         {
             modelBuilder.Entity<Attendance>()
                 .HasRequired(a => a.Gig) // each attendance has a required gig
-                .WithMany() // reverse direction of relationship. from gig to attendances each gig can have many attendances... aka people attending the gig
+                .WithMany(g => g.Attendances) // reverse direction of relationship. once we added a nav property we need to update this here or EF will get upset and think we changed the domain model.
                 .WillCascadeOnDelete(false); // disable cascade deletion to make sql server happy
 
             modelBuilder.Entity<ApplicationUser>()
@@ -41,7 +41,7 @@ namespace GigHub.Models
 
             modelBuilder.Entity<UserNotification>()
                 .HasRequired(n => n.User)
-                .WithMany()
+                .WithMany(u => u.UserNotifications)
                 .WillCascadeOnDelete(false);
 
             // calling base here to make sure the identitydbcontext fluent api overrides are go.
