@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GigHub.Core.Models;
+﻿using GigHub.Core.Models;
+using System.Collections.Generic;
 
 namespace GigHub.Core.Repositories
 {
@@ -10,5 +10,6 @@ namespace GigHub.Core.Repositories
         IEnumerable<Gig> GetGigsUserAttending(string userId);
         Gig GetGigWithAttendees(int gigId);
         void Add(Gig gig);
+        IEnumerable<Gig> GetUpcomingGigs(string searchTerm = null);
     }
 }
